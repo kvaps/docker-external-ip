@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: ip-10.36.200.2
+  name: ip-1.2.3.4
 spec:
   replicas: 1
   template:
@@ -29,9 +29,11 @@ spec:
         image: kvaps/externalip
         env:
         - name: IPADDRESS
-          value: "10.36.200.2/16"
+          value: "1.2.3.4/24"
         - name: DEVICE
-          value: "br-blue-ft"
+          value: "br0"
+        - name: VLAN
+          value: "100"
         - name: DROP_INPUT
           value: "true"
         securityContext:
