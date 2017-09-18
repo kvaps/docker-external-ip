@@ -45,6 +45,7 @@ configure_gateway() {
     if [ ! -z "${GATEWAY}" ]; then
         ip rule add from "${IPSHORT}" table "${TABLE}"
         ip route add default via "${GATEWAY}" table "${TABLE}"
+        ping -c1 "${GATEWAY}"
     fi
 }
 
