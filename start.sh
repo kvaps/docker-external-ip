@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 error() {
 cat <<EOF
@@ -18,6 +18,7 @@ EOF
 exit 1
 }
 DEVICE="${DEVICE:-eth0}"
+IPSHORT="$(echo ${IPADDRESS} | cut -d/ -f1)"
 
 # check variables
 [ ! -z "${IPADDRESS}" ]               || error "Variable \$IPADDRESS is not set!"
@@ -34,12 +35,12 @@ fi
 
 cleanup() {
     ip addr del "${IPADDRESS}" dev "${IPDEVICE}"; 
-    [ "${DROP_INPUT}" = "true" ] && iptables -D INPUT ! -p ICMP -d "${IPADDRESS}" -j DROP
+    [ "${DROP_INPUT}" = "true" ] && iptables -D INPUT ! -p ICMP -d "${IPSHORT}" -j DROP
 }
 
 trap cleanup EXIT
 
-[ "${DROP_INPUT}" = "true" ] && iptables -A INPUT ! -p ICMP -d "${IPADDRESS}" -j DROP
+[ "${DROP_INPUT}" = "true" ] && iptables -A INPUT ! -p ICMP -d "${IPSHORT}" -j DROP
 
 while true; do
     ip addr change "${IPADDRESS}" dev "${IPDEVICE}" preferred_lft "${PREFERRED_LFT:-7}" valid_lft "${VALID_LFS:-10}"
