@@ -24,6 +24,7 @@ Variables
 * `VLAN` - VLAN number (example: `100`)
 * `DEVICE` - Device for IP-address assigning (default: `eth0`)
 * `DROP_INPUT` - If `true` will create iptables rule (default: `false`)
+* `GATEWAY` - Add default gateway for this ip (example: 1.2.3.1)
 * `VALID_LFS` - IP valid lifetime in seconds parameter (default: `10`)
 * `REFFERRED_LFT` - IP refferred lifetime in seconds patrameter (default: `7`)
 * `TIMEOUT` - Timeout in seconds between each IP assigning (default:`7`)
