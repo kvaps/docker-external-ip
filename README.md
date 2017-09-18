@@ -47,3 +47,12 @@ kubectl run my-nginx --image=nginx --replicas=2 --port=80
 # Expose nginx service with externalIP
 kubectl expose deployment my-nginx --port=80 --type=LoadBalancer --external-ip=1.2.3.4
 ```
+
+Docker example
+--------------
+
+This command can be used for tests withot kubernetes environment:
+
+```bash
+docker run --cap-add=NET_ADMIN --net=host -e IPADDRESS=1.2.3.4/24 -e DEVICE=br0 -e VLAN=100 -e DROP_INPUT=true kvaps/external-ip
+```
