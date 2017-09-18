@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: ip-10.36.200.1
+  name: ip-10.36.200.2
 spec:
   replicas: 1
   template:
@@ -26,18 +26,14 @@ spec:
 
       containers:
       - name: ip
-        image: haproxy
+        image: kvaps/externalIP
         env:
         - name: IPADDRESS
           value: "10.36.200.2/16"
         - name: DEVICE
           value: "br-blue-ft"
-        command: ["/bin/sh"]
-        args: ["-c", "while true; do ip addr change $IPADDRESS dev $DEVICE preferred_lft 7 valid_lft 10; sleep 7; done"]
+        - name: DROP_INPUT
+          value: "true"
         securityContext:
           capabilities:
             add: ["NET_ADMIN"]
-        lifecycle:
-          preStop:
-            exec:
-              command: ["/bin/sh", "-c", "ip addr del $IPADDRESS dev $DEVICE"]
