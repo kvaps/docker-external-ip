@@ -1,7 +1,15 @@
 Docker externalIP image 
 =======================
 
-This image assign specific IP-address on the host interface.
+This docker image is assign specific IP-address on the host interface.
+
+```
++-------------+    +-------------+    +-------------+
+|    node1    |    |    node2    |    |    node3    |
++-------------+    +-------------+    +-------------+
+[ 192.168.1.1 ]----[ 192.168.1.2 ]----[ 192.168.1.3 ]
+                                      [   1.2.3.4   ]   <----- additional IP, runned via container
+```
 
 This is mainly used for Kubernetes externalIP services.
 
