@@ -68,9 +68,11 @@ cleanup_iptables() {
 }
 
 cleanup() {
+    kill -s SIGTERM $!
     cleanup_ip
     cleanup_iptables
     cleanup_gateway
+    exit 0
 }
 
 DEVICE="${DEVICE:-eth0}"
@@ -79,7 +81,7 @@ TABLE="$((0x$(printf '%02X' ${GATEWAY//./ })))"
 [ -z "${VLAN}" ] && export IPDEVICE="${DEVICE}" || export IPDEVICE="${DEVICE}.${VLAN}"
 
 check_variables
-trap cleanup SIGTERM EXIT
+trap cleanup SIGKILL SIGTERM SIGHUP SIGINT EXIT INT
 configure_vlan
 cleanup_iptables &> /dev/null
 configure_iptables
@@ -89,5 +91,6 @@ configure_gateway
 
 while true; do
     configure_ip
-    sleep "${TIMEOUT:-7}"
+    sleep "${TIMEOUT:-7}" &
+    wait $!
 done
