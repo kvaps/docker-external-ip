@@ -34,6 +34,8 @@ spec:
           value: "br0"
         - name: VLAN
           value: "100"
+        - name: GATEWAY
+          value: "89.221.212.1"
         - name: DROP_INPUT
           value: "true"
         securityContext:
