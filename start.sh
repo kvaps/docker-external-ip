@@ -47,7 +47,7 @@ configure_gateway() {
         ip rule add from "${IPSHORT}" table "${TABLE}"
         ip route add default via "${GATEWAY}" table "${TABLE}"
         ip rule add from "${POD_NETWORK:-10.244.0.0/16}" lookup "${TABLE}" # fix martian source
-        ping -c1 "${GATEWAY}"
+	timeout -t 1 ping -c1 "${GATEWAY}" &> /dev/null
     fi
 }
 
@@ -79,7 +79,7 @@ TABLE="$((0x$(printf '%02X' ${GATEWAY//./ })))"
 [ -z "${VLAN}" ] && export IPDEVICE="${DEVICE}" || export IPDEVICE="${DEVICE}.${VLAN}"
 
 check_variables
-trap cleanup EXIT
+trap cleanup SIGTERM EXIT
 configure_vlan
 cleanup_iptables &> /dev/null
 configure_iptables
