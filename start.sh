@@ -81,8 +81,10 @@ TABLE="$((0x$(printf '%02X' ${GATEWAY//./ })))"
 check_variables
 trap cleanup EXIT
 configure_vlan
+cleanup_iptables &> /dev/null
 configure_iptables
 configure_ip
+cleanup_gateway &> /dev/null
 configure_gateway
 
 while true; do
