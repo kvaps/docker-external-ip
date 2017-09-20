@@ -54,6 +54,7 @@ configure_gateway() {
 cleanup_gateway() {
     if [ ! -z "${GATEWAY}" ]; then
         ip rule del from "${IPSHORT}" table "${TABLE}"
+        ip rule del from "${POD_NETWORK:-10.244.0.0/16}" lookup "${TABLE}"
     fi
 }
 
