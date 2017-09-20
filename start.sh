@@ -11,6 +11,7 @@ $1
     - DEVICE (default: eth0)
     - DROP_INPUT (default: false)
     - GATEWAY (example: 1.2.3.1)
+    - POD_NETWORK (default: 10.244.0.0/16)
     - VALID_LFS (default: 10)
     - REFFERRED_LFT (default: 7)
     - TIMEOUT (default:7)
@@ -45,6 +46,7 @@ configure_gateway() {
     if [ ! -z "${GATEWAY}" ]; then
         ip rule add from "${IPSHORT}" table "${TABLE}"
         ip route add default via "${GATEWAY}" table "${TABLE}"
+        ip rule add from "${POD_NETWORK:-10.244.0.0/16}" lookup "${TABLE}" # fix martian source
         ping -c1 "${GATEWAY}"
     fi
 }
